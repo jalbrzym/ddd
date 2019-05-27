@@ -1,12 +1,12 @@
-﻿using Domain.Orders.Contracts;
+﻿using Domain.Abstractions;
+using Domain.Orders.Contracts;
 using Domain.Payments.Contracts;
 using Domain.Payments.Contracts.Events;
 using Domain.ValueTypes;
-using MediatR;
 
 namespace Domain.Payments
 {
-    public class Payment
+    public class Payment : Entity, IAggregateRoot
     {
         private Payment(PaymentId id, OrderId orderId, Money amountToPay)
         {
@@ -24,16 +24,16 @@ namespace Domain.Payments
             return new Payment(PaymentId.Generate(), orderId, amountToPay);
         }
 
-        public void Start(IMediator mediator)
+        public void Start()
         {
             //TODO: Change status etc
             //TODO: Publish should be executed after commiting aggregate to db..
-            mediator.Publish(new PaymentStarted(Id, OrderId));
+            RaiseEvent(new PaymentStarted(Id, OrderId));
         }
 
-        public void Completed(IMediator mediator)
+        public void Completed()
         {
-            mediator.Publish(new PaymentCompleted(Id, OrderId));
+            RaiseEvent(new PaymentCompleted(Id, OrderId));
         }
     }
 }

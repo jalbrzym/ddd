@@ -1,9 +1,10 @@
-﻿using Domain.Customers.Contracts;
+﻿using Domain.Abstractions;
+using Domain.Customers.Contracts;
 using Domain.ValueTypes;
 
 namespace Domain.Customers
 {
-    public class Customer
+    public class Customer : Entity, IAggregateRoot
     {
         public Customer(CustomerId id, FullName fullName, Age age)
         {

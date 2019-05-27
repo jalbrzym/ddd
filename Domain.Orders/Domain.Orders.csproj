@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Domain.Abstractions\Domain.Abstractions.csproj" />
     <ProjectReference Include="..\Domain.Customers.Contracts\Domain.Customers.Contracts.csproj" />
     <ProjectReference Include="..\Domain.Orders.Contracts\Domain.Orders.Contracts.csproj" />
     <ProjectReference Include="..\Domain.Payments.Contracts\Domain.Payments.Contracts.csproj" />

@@ -6,18 +6,16 @@ namespace Domain.Payments.EventHandlers
     public class OnPaymentRequested : NotificationHandler<OrderPaymentRequested>
     {
         private readonly IPaymentRepository _paymentRepository;
-        private readonly IMediator mediator;
 
-        public OnPaymentRequested(IPaymentRepository paymentRepository, IMediator mediator)
+        public OnPaymentRequested(IPaymentRepository paymentRepository)
         {
             _paymentRepository = paymentRepository;
-            this.mediator = mediator;
         }
 
         protected override void Handle(OrderPaymentRequested notification)
         {
             var payment = Payment.Create(notification.OrderId, notification.AmountToPay);
-            payment.Start(mediator);
+            payment.Start();
             _paymentRepository.SaveAndCommit(payment);
         }
     }

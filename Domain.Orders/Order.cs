@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Domain.Abstractions;
 using Domain.Customers.Contracts;
 using Domain.Orders.Contracts;
 using Domain.Orders.Contracts.Events;
@@ -9,7 +10,7 @@ using MediatR;
 
 namespace Domain.Orders
 {
-    public class Order
+    public class Order : Entity, IAggregateRoot
     {
         private readonly List<OrderProduct> _products;
 
@@ -36,11 +37,11 @@ namespace Domain.Orders
             _products.Add(new OrderProduct(productId, price, quantity));
         }
 
-        public void ConfirmAndPay(IMediator mediator)
+        public void ConfirmAndPay()
         {
             //TODO: Change current status etc
             //TODO: Publish should be executed after commiting aggregate to db..
-            mediator.Publish(new OrderPaymentRequested(Id, _products.Select(product => product.TotalPrice).Aggregate((left, right) => left + right)));
+            RaiseEvent(new OrderPaymentRequested(Id, _products.Select(product => product.TotalPrice).Aggregate((left, right) => left + right)));
         }
 
         public void PaymentStarted()
